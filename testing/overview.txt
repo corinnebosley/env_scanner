@@ -1,0 +1,55 @@
+TESTING OVERVIEW
+
+The main purpose of software testing is to assure quality of a product.  
+First and foremost, all parts of the product have to correctly execute the job they were built to do.  
+Additionally, the result of each job must be accurate and consistent.  Product testing helps to ensure that this is the case.
+
+TYPES OF TESTING
+
+1. Unit Testing
+This is for a single component of a system, and is intended to check that the results are as expected for regular cases and for boundary cases.
+These would be used to highlight the presence of bugs and check that the fix is satisfactory.
+
+2. Integrated Testing
+This is to check that the components work together, so typically you would be testing several components in one integration test to check that they don't break each other.
+A suite of integration tests includes tests for every component of a system (although these are not unit tests).
+
+3. Functional Testing
+This is to test a set of use cases of the product from start to end.
+
+SOME PURPOSES OF TESTING
+
+- Check that edge cases get the right answer (unit)
+- Check that misuse of a product returns an error message (unit)
+- Check that if you run several functions together, you still get the right answer (integration)
+- Give yourself an initial purpose for a function; 'I want something that gives me the right answer for this thing...' (unit)
+- Show up a bug; test will pass when bug is fixed (unit)
+- Ensure accuracy and usability of product (functional)
+- Check performance speed (unit)
+
+EQUIVALENCE PARTITIONING
+
+This is a concept which describes the determination of which tests are equivalent to each other and which look for a different issue.
+For example, if I write a very basic function which adds two numbers together:
+
+a + b = c
+
+Here are some scenarios that I can write tests for:
+
+Test 1:
+a = 2
+b = 2
+c = 4
+
+Test 2:
+a = 679
+b = -6
+c = 673
+
+Test 3:
+a = 58
+b = blah
+c = Error
+
+In the cases above, Test 1 and Test 2 are equivalent to each other as there is nothing that I am testing in one that will highlight a different problem to the other.
+However, Test 3 is not equivalent as I am checking that I get an error message when I try to add something that is not a number.
