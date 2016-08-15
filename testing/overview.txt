@@ -56,3 +56,7 @@ c = Error
 
 In the cases above, Test 1 and Test 2 are equivalent to each other as there is nothing that I am testing in one that will highlight a different problem to the other.
 However, Test 3 is not equivalent as I am checking that I get an error message when I try to add something that is not a number.
+
+
+https://www.atlassian.com/software-testing?tab=automated-software-testing#automatedtests
+
