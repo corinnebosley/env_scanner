@@ -9,13 +9,16 @@ TYPES OF TESTING
 1. Unit Testing
 This is for a single component of a system, and is intended to check that the results are as expected for regular cases and for boundary cases.
 These would be used to highlight the presence of bugs and check that the fix is satisfactory.
+(Quick to write, but do not check functionality of several units working together)
 
 2. Integrated Testing
 This is to check that the components work together, so typically you would be testing several components in one integration test to check that they don't break each other.
 A suite of integration tests includes tests for every component of a system (although these are not unit tests).
+(This will check the functionality of a system but is not efficient for testing one change at a time.)
 
 3. Functional Testing
 This is to test a set of use cases of the product from start to end.
+(This is very expensive in terms of efficiency)
 
 SOME PURPOSES OF TESTING
 
@@ -29,7 +32,7 @@ SOME PURPOSES OF TESTING
 
 EQUIVALENCE PARTITIONING
 
-This is a concept which describes the determination of which tests are equivalent to each other and which look for a different issue.
+This is a concept which describes the determination of which tests are equivalent to each other and which look for different issues.
 For example, if I write a very basic function which adds two numbers together:
 
 a + b = c
