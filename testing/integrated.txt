@@ -1,0 +1,22 @@
+INTEGRATED TESTING
+
+This is essentially a large collection (suite) of unit tests which are run together to assess the performance and reliability of the wider system.
+
+There are several types of Integration Tests, mainly:
+
+1. Big Bang Integration
+All components are tested with other components at once.
+Diagram: http://www.tutorialspoint.com/software_testing_dictionary/big_bang_testing.htm
+
+2. Bottom-up Integration
+Lowest-level components are tested with the next level up first, and testing continues upwards.
+Diagram: http://www.tutorialspoint.com/software_testing_dictionary/bottom_up_testing.htm
+This type of testing is good for identifying bugs and errors in specific modules.
+
+3. Top-down Integration
+Highest-level components are tested first, testing continues downwards.
+Diagram: http://www.tutorialspoint.com/software_testing_dictionary/top_down_integration_testing.htm
+This type of testing is good for testing links between modules, so stubs can be used.
+
+
+
