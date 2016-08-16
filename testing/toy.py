@@ -9,8 +9,8 @@
 
 class MyFunction:
     def __init__(self, a, b):
-        self.a = a
-        self.b = b
+        self.a = int(a)
+        self.b = int(b)
 
     def add(self):
         c = self.a + self.b
@@ -25,6 +25,6 @@ class MyFunction:
         return e
 
 
-#answer = MyFunction(1, 2)
+#answer = MyFunction('one', 'two')
 #print(answer.add())
 
