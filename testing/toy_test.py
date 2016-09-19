@@ -19,6 +19,7 @@ class TestMyFunction(unittest.TestCase):
     def test_divide(self):
         self.assertEqual(toy.MyFunction(3., 3.).divide(), 1.)
 
+    # Check that error will occur if anything other than a float is used
     def test_nan(self):
         self.assertRaises(ValueError, toy.MyFunction, 'one', 'two')
 

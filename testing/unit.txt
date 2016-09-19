@@ -34,3 +34,5 @@ PURPOSES FOR UNIT TESTING
 As well as for demostrating bugs and fixes in existing code, unit tests are good for identifying edge cases in code that is being developed.
 With any new function or component of software, it is worthwhile during code reviews identifying use cases which could cause problems with the way the function is written.
 These edge cases can then be turned into unit tests and considered during the development of the function in order to pre-empt potential bugs and catch the cases in which they would occur, with a pre-determined fix already implemented.
+However, this skill improves only with experience.  No matter how skilled the developer, it is virtually impossible to think of all potential problems before they occur.  
+In fact in certain types of continuous development (such as Agile) it is often considered bad practice to spend a large amount of time thinking of all possible edge cases, and it is better to first construct a working code base, and then deal with problems as they arise.
