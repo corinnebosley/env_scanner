@@ -1,0 +1,36 @@
+UNIT TESTING
+
+A unit test is designed only to test one and only one component of a softare library.  
+As such, unit tests are most effective when they contain no imports, as these would introduce extra functions to the test which should not be necessary.
+In fact, as soon as extra functions are introduced, the test becomes that of integration as opposed to singular functionality.
+
+Often unit tests are a good approach to demonstrating bugs which need fixing, and then for testing a proposed fix.
+This can become time-consuming, as the developer would normally first notice a bug in conjunction with other functions or libraries, and would then have to reproduce the scenario without using any imports, then making it an isolated test case.
+Because of the time that this can take, this approach is most useful in continuous delivery software development.
+
+EXAMPLE
+
+Let's suppose a bug has been reported in a library that uses numpy arrays, and a snippet of code demonstrates the error:
+
+	import numpy as np
+	import bad_function as bf
+
+	array = np.linspace(0, 10, 10)
+
+	bf.do_stuff(array)
+
+
+Although this test is short, it is not a perfect unit test as the array being used is constructed using another library, so the source of the problem is unclear.
+To make this test an absolute unit test, the array must be reproduced without using any imports except for the component containing the bug:
+
+	import bad_function as bf
+
+	array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+	bf.do_stuff(array)
+
+PURPOSES FOR UNIT TESTING
+
+As well as for demostrating bugs and fixes in existing code, unit tests are good for identifying edge cases in code that is being developed.
+With any new function or component of software, it is worthwhile during code reviews identifying use cases which could cause problems with the way the function is written.
+These edge cases can then be turned into unit tests and considered during the development of the function in order to pre-empt potential bugs and catch the cases in which they would occur, with a pre-determined fix already implemented.

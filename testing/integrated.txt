@@ -19,4 +19,8 @@ Diagram: http://www.tutorialspoint.com/software_testing_dictionary/top_down_inte
 This type of testing is good for testing links between modules, so stubs can be used.
 
 
+CONTINUOUS INTEGRATION
 
+This is a set of automated tests that are run on a continous delivery basis; that is, with all individual small changes in a source control repository.
+These tests are designed to reflect business goals and user stories, and as such are executed in a bottom-up configuration.  
+However, they should also cover the system requirements of the client, so efficiency of the software should also be tested in this suite.

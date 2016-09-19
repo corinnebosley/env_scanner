@@ -4,14 +4,17 @@ The main purpose of software testing is to assure quality of a product.
 First and foremost, all parts of the product have to correctly execute the job they were built to do.  
 Additionally, the result of each job must be accurate and consistent.  Product testing helps to ensure that this is the case.
 
-TYPES OF TESTING
+The first stage of any kind of testing is static testing; this involves code reviews and walkthroughs which act both as sanity tests to ensure that the code is logical, and also as a refinement technique to exchange knowledge and incrementally improve the efficicency of the code.
+The next stage of testing is dynamic testing, which involves the execution of the code with some form of test data.
+
+TYPES OF DYNAMIC TESTING
 
 1. Unit Testing
 This is for a single component of a system, and is intended to check that the results are as expected for regular cases and for boundary cases.
 These would be used to highlight the presence of bugs and check that the fix is satisfactory.
 (Quick to write, but do not check functionality of several units working together)
 
-2. Integrated Testing
+2. Integration Testing
 This is to check that the components work together, so typically you would be testing several components in one integration test to check that they don't break each other.
 A suite of integration tests includes tests for every component of a system (although these are not unit tests).
 (This will check the functionality of a system but is not efficient for testing one change at a time.)
@@ -58,5 +61,21 @@ In the cases above, Test 1 and Test 2 are equivalent to each other as there is n
 However, Test 3 is not equivalent as I am checking that I get an error message when I try to add something that is not a number.
 
 
+ECONOMICS
+
+The cost of fixing problems with software, such as design issues or bugs, can increase the longer it is left unnoticed or unfixed.  
+So there is an argument that the more tests are written pre-release, or at early stages of construction, the lower the cost of the project.
+However, because the tests should be run each time a change needs to be made, larger test suites can hinder efficient progress, so there is a balance to be made between comprehensive testing and efficient progress.
+In some cases, equivalence partitioning could be of use when deciding which tests are unnecessary, but often equivalence is not the problem.
+When a piece of software has been active for a reasonable period of time, the size of the test-suite naturally increases; 
+initially because the amount of functional components which need to be tested for purpose and integration increases, but also because over time, there will have been many bugfixes which need to have been tested.
+
+One way to handle the cost of testing is with continuous delivery; this is a method of software managament which uses continuous small-change cycles with a source control repository to lessen the cost of testing.
+Using this method, the development team would only make one small change at a time, followed immediately by a unit test to check functionality.  This can then be added to the repository for the next stage of testing (which includes a build of the software).
+Next the change is tested with an automated test suite to check that components are integrating correctly.  If these tests pass, the change can be added to the main codebase.
+This cycle of writing, checking and testing (and repeating if necessary) should decrease the overall cost of software testing because it is performed at the earliest stage possible, so the impact of any bugs will be minimal.
+
 https://www.atlassian.com/software-testing?tab=automated-software-testing
+
+https://en.wikipedia.org/wiki/Software_testing
 
