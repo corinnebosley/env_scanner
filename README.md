@@ -12,4 +12,8 @@ This repo is entirely for my own benefit, and is intended to house the learning 
 2. How to symlink:
 
     ln -s /path/to/file /path/to/symlink
+    
+3. How to check the disk usage (file sizes) of stuff in my home space:
+
+    du -sh *
 
