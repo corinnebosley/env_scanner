@@ -20,6 +20,7 @@ This repo is entirely for my own benefit, and is intended to house the learning 
 4. Rebasing:
 
     git rebase -i HEAD~number-of-commits-to-squash
+
     git rebase --abort
     
     
