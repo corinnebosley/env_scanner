@@ -16,4 +16,11 @@ This repo is entirely for my own benefit, and is intended to house the learning 
 3. How to check the disk usage (file sizes) of stuff in my home space:
 
     du -sh *
+    
+4. Rebasing:
+
+    git rebase -i HEAD~number-of-commits-to-squash
+    git rebase --abort
+    
+    
 
