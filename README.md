@@ -23,5 +23,10 @@ This repo is entirely for my own benefit, and is intended to house the learning 
 
     git rebase --abort
     
-    
+5. Fetching a remote branch:
 
+    git remote add marqh https://github.com/marqh/iris.git
+    
+    git fetch marqh mpldep:marks_mpldep
+    
+    git checkout marks_mpldep
