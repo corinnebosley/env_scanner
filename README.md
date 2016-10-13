@@ -30,3 +30,13 @@ This repo is entirely for my own benefit, and is intended to house the learning 
     git fetch marqh mpldep:marks_mpldep
     
     git checkout marks_mpldep
+    
+    OR (this is my preference as it seems less confusing):
+    
+    git remote add [fork name(i.e. patrick)] [repo_URL(i.e. https://github.com/pp-mo/iris.git)]
+    
+    git fetch [forkname]
+    
+    git checkout -b [new branch name] [fork name/fork branch to track]
+    
+    
