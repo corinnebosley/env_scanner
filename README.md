@@ -39,4 +39,10 @@ This repo is entirely for my own benefit, and is intended to house the learning 
     
     git checkout -b [new branch name] [fork name/fork branch to track]
     
+6. Watching a changing directory:
+
+    watch -n0.5 "ls -ltr | tail -20"
+    
+    (This means update the terminal every 0.5 sedonds for changes and list the last 20 items in the directory.)
+    
     
