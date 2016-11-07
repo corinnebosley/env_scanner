@@ -1,0 +1,17 @@
+Bitrot
+======
+
+When an image is created for an html page, it relies on current graphics code to uphold its integrity.
+
+When the codebase for that code is updated, the graphic which it was used to create can develop bugs or simply change the way it behaves.
+
+For example, when AVD were unpinning mpl and numpy from Iris, many aspects had very small but significant behavioural changtes, so the entire library had to be overhauled to ensure it continued to work.
+
+The scenario concerning html graphics is similar.  There could be many moving parts which stop working, or even static graphics may rely on a certain definition of space which can change, and then the graphic becomes undecipherable.  
+
+Solutions
+---------
+
+Ultimately, this problem is solved by one or more individuals taking responisbility for maintaining historical web pages.  It is not enough to simply construct a page and then forget about it; this is when bitrot occurs.
+
+The maintainer does nopt necessarily have to be the constructor.  When a page is submitted for review, the data and the code for building the page should also be submitted and published, allowing a third party to recreate and maintain it.  Alternatively, a static version of the page could also be submitted and published in case of irrepairable bitrot.
