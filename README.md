@@ -13,6 +13,8 @@ This repo is entirely for my own benefit, and is intended to house the learning 
 
     ln -s /path/to/file /path/to/symlink
     
+    rm link (no slash on end of link)
+    
 3. How to check the disk usage (file sizes) of stuff in my home space:
 
     du -sh *
