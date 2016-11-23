@@ -47,4 +47,15 @@ This repo is entirely for my own benefit, and is intended to house the learning 
     
     (This means update the terminal every 0.5 sedonds for changes and list the last 20 items in the directory.)
     
+7. Activating the SSS environment:
+
+    a. (In terminal):
+    
+    export PATH="/opt/scitools/environments/default/current/bin/python":$PATH
+    
+    b. (At top of python file; shebang):
+    
+    !#/opt/scitools/environments/default/current/bin/python
+    
+    
     
