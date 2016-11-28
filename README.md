@@ -51,7 +51,7 @@ This repo is entirely for my own benefit, and is intended to house the learning 
 
     a. (In terminal):
     
-    export PATH=/opt/scitools/environments/default/current/bin/python:$PATH
+    export PATH=/opt/scitools/environments/default/current/bin:$PATH
     
     b. (At top of python file; shebang):
     
