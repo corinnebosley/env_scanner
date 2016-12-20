@@ -18,6 +18,8 @@ Things to look into:
 
 6. D3 - Tool for constructing graphics in javascript
 
+..........Continue this...
+
 7. FF Chartwell - Tool for turning text into tiny charts
 
 8. Amazon AWS - Huge datasets in the cloud
