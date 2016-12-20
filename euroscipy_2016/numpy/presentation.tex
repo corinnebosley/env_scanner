@@ -1,0 +1,920 @@
+% lualatex presentation
+
+\documentclass[svgnames]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{arev}
+\usepackage{beramono}
+\usepackage{fontawesome}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{rotating}
+\usepackage{listings}
+\usepackage{nicefrac}
+\usepackage{ulem}
+\usepackage{hyperref}
+
+\usetheme{default}
+\setbeamertemplate{navigation symbols}
+{%
+%  \hspace{3em}
+%  \vbox{%
+%  \hbox{\insertslidenavigationsymbol}
+%  \hbox{\insertframenavigationsymbol}
+%  \hbox{\insertbackfindforwardnavigationsymbol}
+%  \vspace{2em}}
+}
+
+\setbeamercolor{alerted text}{fg=red!70!black}
+\setbeamercolor{structure}{fg=Navy}
+
+
+\hypersetup{%
+  pdftitle={Introduction to NumPy arrays}
+  ,pdfauthor={Gert-Ludwig Ingold <gert.ingold@physik.uni-augsburg.de>}
+  ,pdfsubject={Tutorial at EuroSciPy 2016, Erlangen 23.8.2016}
+  ,pdfkeywords={Python, NumPy, tutorial, EuroSciPy}
+}
+
+\lstset{%
+  language=Python
+  ,basicstyle={\ttfamily}
+  ,escapechar=/
+}
+
+\newfontfamily\DejaSans{DejaVu Sans}
+\definecolor{positive}{rgb}{0, 0.5, 0}
+\definecolor{negative}{rgb}{0.7, 0, 0}
+\newcommand\smiley{\textcolor{positive}{\DejaSans ☺}}
+\newcommand\frownie{\textcolor{negative}{\DejaSans ☹}}
+\definecolor{myred}{rgb}{0.8, 0, 0}
+\definecolor{mygreen}{rgb}{0, 0.6, 0}
+\definecolor{myblue}{rgb}{0, 0, 0.8}
+
+\newcommand{\soutthick}[1]{%
+  \renewcommand{\ULthickness}{1.5pt}%
+  \sout{#1}%
+  \renewcommand{\ULthickness}{.4pt}% Resetting to ulem default
+}
+
+\graphicspath{{./images/}}
+
+\begin{document}
+
+\begin{frame}
+ \begin{center}
+  \structure{\Large\textbf{Introduction to NumPy arrays}}\\[0.3truecm]
+  \structure{\large Gert-Ludwig Ingold}
+
+  \vspace{2truecm}
+  \faicon{github}\ \ttfamily{\scriptsize https://github.com/gertingold/euroscipy16-numpy-tutorial.git}
+ \end{center}
+\end{frame}
+
+\begin{frame}[t]{Python comes with batteries included}
+ \ding{220} extensive Python standard library
+
+ \vspace{0.3truecm}
+ \structure{What about batteries for scientists (and others as well)?}
+
+ \vspace{0.2truecm}
+ \ding{220} scientific Python ecosystem
+
+ \begin{center}
+  \only<1>{\includegraphics[width=0.7\textwidth]{SciPyEco}}%
+  \only<2>{\includegraphics[width=0.7\textwidth]{SciPyEco_NumPy}}\quad%
+  \raisebox{0.2truecm}{%
+   \begin{sideways}
+    \tiny from: \url{www.scipy.org}
+   \end{sideways}}
+ \end{center}
+
+ + SciKits and many other packages
+\end{frame}
+
+\begin{frame}
+ \vspace*{-0.5truecm}
+ \begin{columns}
+  \begin{column}[t]{0.5\textwidth}
+   \begin{center}
+    \structure{www.scipy-lectures.org}
+
+    \includegraphics[width=\textwidth]{ScipyLectCover}
+   \end{center}
+  \end{column}%
+  \begin{column}[t]{0.5\textwidth}
+   \begin{center}
+    \structure{docs.scipy.org/doc/numpy/}
+
+    \vspace{0.3truecm}
+    \includegraphics[width=\textwidth]{NumpyManual}
+   \end{center}
+  \end{column}
+ \end{columns}
+\end{frame}
+
+\begin{frame}{A wish list}
+ \begin{itemize}
+  \item we want to work with vectors and matrices
+ \end{itemize}
+
+ \begin{columns}
+  \begin{column}{0.55\textwidth}
+   \begin{displaymath}
+    \begin{pmatrix}
+     a_{11} & a_{12} & \cdots & a_{1n}\\
+     a_{21} & a_{22} & \cdots & a_{2n}\\
+     \vdots & \vdots & \ddots & \vdots\\
+     a_{n1} & a_{n2} & \cdots & a_{nn}\\
+    \end{pmatrix}
+   \end{displaymath}
+  \end{column}%
+  \begin{column}{0.45\textwidth}
+   \includegraphics[width=0.7\textwidth]{rgbarray}
+
+   colour image as $N\times M\times3$-array
+  \end{column}
+ \end{columns}
+
+ \begin{itemize}
+  \item we want our code to run fast
+  \item we want support for linear algebra
+  \item \dots 
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{List indexing}
+ \begin{center}
+  \includegraphics[width=0.96\textwidth]{listindexing2}
+ \end{center}
+ \begin{itemize}
+  \item indexing starts at 0
+  \item negative indices count from the end of the list to the beginning
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{List slicing}
+
+ basic syntax: \texttt{[start:stop:step]}
+
+ \vspace{0.2truecm}
+ \begin{center}
+  \includegraphics[width=\textwidth]{listindexing1}
+ \end{center}
+ \begin{itemize}
+  \item if \texttt{step=1}
+  \begin{itemize}
+      \item slice contains the elements \texttt{start} to \texttt{stop-1}
+      \item slice contains \texttt{stop-start} elements
+  \end{itemize}
+  \item default values:
+  \begin{itemize}
+      \item \makebox[1.5truecm]{\texttt{start}\hfill} 0 (first element)
+      \item \makebox[1.5truecm]{\texttt{stop}\hfill} N-1 (last element)
+      \item \makebox[1.5truecm]{\texttt{step}\hfill} 1
+  \end{itemize}
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \begin{center}
+  \structure{\large\bfseries Let's do some slicing}
+
+  \vspace{0.5truecm}
+  \includegraphics[width=3truecm]{yourturn}
+ \end{center}
+\end{frame}
+
+\begin{frame}[fragile, t]{Matrices and lists of lists}
+ 
+ \vspace{0.3truecm}
+ Can we use lists of lists to work with matrices?
+
+ \begin{columns}
+  \begin{column}{0.4\textwidth}
+   \begin{displaymath}
+    \begin{pmatrix}
+     0 & 1 & 2\\
+     3 & 4 & 5\\
+     6 & 7 & 8
+    \end{pmatrix}
+   \end{displaymath}
+  \end{column}%
+  \begin{column}{0.6\textwidth}
+   \begin{center}
+    \begin{lstlisting}
+matrix = [[0, 1, 2],
+          [3, 4, 5],
+          [6, 7, 8]]
+    \end{lstlisting}
+
+    \vspace{\baselineskip}
+   \end{center}
+  \end{column}
+ \end{columns}
+ \begin{itemize}
+  \item How can we extract a row? \uncover<3>{\smiley}
+  \item How can we extract a column? \uncover<3>{\frownie}
+ \end{itemize}
+
+ \vspace{0.3truecm}
+ \begin{center}
+  \only<2>{\structure{\large\bfseries Let's do some experiments}
+
+  \vspace{0.5truecm}
+  \includegraphics[width=3truecm]{yourturn}}%
+  \only<3>{\alert{Lists of lists do not work like matrices}}
+ \end{center}
+\end{frame}
+
+\begin{frame}{Problems with lists as matrices}
+ \begin{itemize}
+  \item different axes are not treated on equal footing
+  \item lists can contain arbitrary objects\\
+        matrices have a homogeneous structure
+  \item list elements can be scattered in memory
+ \end{itemize}
+
+ \vspace{0.3truecm}
+ Applied to matrices \dots
+ \begin{itemize}
+  \item[] \dots lists are conceptually inappropriate
+  \item[] \dots lists have less performance than possible
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{We need a new object}
+
+ \begin{center}
+  \structure{\Huge\bfseries ndarray}
+
+  \vspace{0.5truecm}
+  multidimensional, homogeneous array of fixed-size items
+ \end{center}
+\end{frame}
+
+\begin{frame}[fragile, t]{Getting started}
+
+ \vspace{1.5truecm}
+ Import the NumPy package:
+
+ \vspace{0.4truecm}
+ \begin{center}
+  \begin{minipage}{0.75\textwidth}
+   \only<1>{\texttt{from numpy import *}}%
+   \only<2->{\soutthick{\texttt{from numpy import *}}}
+
+   \only<2>{\texttt{from numpy import array, sin, cos}}%
+   \only<3->{\soutthick{\texttt{from numpy import array, sin, cos}}}
+
+   \only<3>{\texttt{import numpy}}%
+   \only<4->{\soutthick{\texttt{import numpy}}}
+
+   \only<4>{\texttt{import numpy as np}\quad\rotatebox[origin=c]{180}{\alert{\ding{220}}}
+
+            \vspace{0.5truecm}
+            \begin{center}
+             \includegraphics[width=3truecm]{yourturn}
+            \end{center}}
+  \end{minipage}
+ \end{center}
+\end{frame}
+
+\begin{frame}{Data types}
+Some important data types:
+
+\vspace{0.3truecm}
+\begin{tabular}{ll}
+integer & \texttt{int8}, \texttt{int16}, \texttt{int32}, \texttt{int64}, \texttt{uint8}, \dots\\[0.2truecm]
+float   & \texttt{float16}, \texttt{float32}, \texttt{float64}, \dots \\[0.2truecm]
+complex & \texttt{complex64}, \texttt{complex128}, \dots\\[0.2truecm]
+boolean & \texttt{bool8}\\[0.2truecm]
+Unicode string  & \\
+\end{tabular}
+
+\vspace{0.3truecm}
+Default: Python float
+
+\vspace{0.3truecm}
+\begin{center}
+ \alert{Beware of overflows!}
+\end{center}
+
+\begin{center}
+ \includegraphics[width=3truecm]{yourturn}
+\end{center}
+\end{frame}
+
+\begin{frame}{Strides}
+ \begin{columns}
+  \begin{column}{0.33\textwidth}
+   \begin{displaymath}
+    \begin{pmatrix}
+     0 & 1 & 2 & 3 & 4 & 5
+    \end{pmatrix}
+   \end{displaymath}
+  \end{column}%
+  \begin{column}{0.67\textwidth}
+   (8,)
+
+   \vspace{0.2truecm}
+   \includegraphics[width=\textwidth]{strides_0}
+  \end{column}
+ \end{columns}
+
+ \vspace{0.8truecm}
+ \begin{columns}
+  \begin{column}{0.33\textwidth}
+   \begin{displaymath}
+    \begin{pmatrix}
+     0 & 1 & 2\\
+     3 & 4 & 5
+    \end{pmatrix}
+   \end{displaymath}
+  \end{column}%
+  \begin{column}{0.67\textwidth}
+   (24, 8)
+
+   \vspace{0.2truecm}
+   \includegraphics[width=\textwidth]{strides_3}
+  \end{column}
+ \end{columns}
+
+ \vspace{0.8truecm}
+ \begin{columns}
+  \begin{column}{0.33\textwidth}
+   \begin{displaymath}
+    \begin{pmatrix}
+     0 & 1 \\
+     2 & 3 \\
+     4 & 5
+    \end{pmatrix}
+   \end{displaymath}
+  \end{column}%
+  \begin{column}{0.67\textwidth}
+   (16, 8)
+
+   \vspace{0.2truecm}
+   \includegraphics[width=\textwidth]{strides_2}
+  \end{column}
+ \end{columns}
+\end{frame}
+
+\begin{frame}{Views}
+ For the sake of efficiency, NumPy uses views if possible.
+
+ \begin{itemize}
+  \item Changing one or more matrix elements will change it in all views.
+  \item Example: transposition of a matrix \texttt{a.T}\\
+        No need to copy the matrix and to create a new one
+ \end{itemize}
+
+ \begin{center}
+  \includegraphics[width=3truecm]{yourturn}
+ \end{center}
+\end{frame}
+
+\begin{frame}{Some array creation routines}
+
+ \begin{itemize}
+  \item numerical ranges:
+        \texttt{arange}, \texttt{linspace}, \texttt{logspace}
+  \item homogeneous data:
+        \texttt{zeros}, \texttt{ones}
+  \item diagonal elements:
+        \texttt{diag}, \texttt{eye}
+  \item random numbers:
+        \texttt{rand}, \texttt{randint}
+ \end{itemize}
+
+ \begin{center}
+  \includegraphics[width=3truecm]{yourturn}
+ \end{center}
+\end{frame}
+
+\begin{frame}{Indexing and slicing in one dimension}
+ \structure{1d arrays}: indexing and slicing as for lists
+
+ \begin{itemize}
+  \item first element has index 0
+  \item negative indices count from the end
+  \item slices: \texttt{[start:stop:step]}\\
+        \strut\hphantom{slices:\ }  without the element indexed by \texttt{stop}
+  \item if values are omitted:
+        \begin{itemize}
+         \item \texttt{start}: starting from first element
+         \item \texttt{stop}: until (and including) the last element
+         \item \texttt{step}: all elements between \texttt{start} and \texttt{stop}-1
+        \end{itemize}
+ \end{itemize}
+
+ \begin{center}
+  \includegraphics[width=3truecm]{yourturn}
+ \end{center}
+\end{frame}
+
+\begin{frame}{Indexing and slicing in higher dimensions}
+ \begin{itemize}
+  \item usual slicing syntax
+  \item difference to lists:\\
+        slices for the various axes separated by comma
+ \end{itemize}
+
+ \begin{center}
+  \only<1>{\includegraphics[width=0.8\textwidth]{arraygraphics_0}}%
+  \only<2>{\includegraphics[width=0.8\textwidth]{arraygraphics_1}}
+ \end{center}
+\end{frame}
+
+\begin{frame}{Indexing and slicing in higher dimensions}
+ \begin{center}
+  \includegraphics[width=3truecm]{yourturn}
+ \end{center}
+
+ \begin{center}
+  \only<1>{\includegraphics[width=0.8\textwidth]{arraygraphics_2_wo}}%
+  \only<2>{\includegraphics[width=0.8\textwidth]{arraygraphics_2}}%
+  \only<3>{\includegraphics[width=0.8\textwidth]{arraygraphics_3_wo}}%
+  \only<4>{\includegraphics[width=0.8\textwidth]{arraygraphics_3}}%
+  \only<5>{\includegraphics[width=0.8\textwidth]{arraygraphics_4_wo}}%
+  \only<6>{\includegraphics[width=0.8\textwidth]{arraygraphics_4}}%
+  \only<7>{\includegraphics[width=0.8\textwidth]{arraygraphics_5_wo}}%
+  \only<8>{\includegraphics[width=0.8\textwidth]{arraygraphics_5}}
+ \end{center}
+\end{frame}
+
+\begin{frame}{Fancy indexing -- Boolean mask}
+ \begin{center}
+  \includegraphics[width=0.8\textwidth]{arraygraphics_6}
+ \end{center}
+\end{frame}
+
+\begin{frame}{Fancy indexing -- array of integers}
+ \begin{center}
+  \includegraphics[width=0.8\textwidth]{arraygraphics_7}
+ \end{center}
+\end{frame}
+
+\begin{frame}{Application: sieve of Eratosthenes}
+ \includegraphics[width=\textwidth]{eratosthenes_1}\\[0.3truecm]
+ \includegraphics[width=\textwidth]{eratosthenes_2}\\[0.3truecm]
+ \includegraphics[width=\textwidth]{eratosthenes_3}\\[0.3truecm]
+ \includegraphics[width=\textwidth]{eratosthenes_4}\\[0.3truecm]
+ \includegraphics[width=\textwidth]{eratosthenes_5}\\[0.3truecm]
+ \includegraphics[width=\textwidth]{eratosthenes_6}
+\end{frame}
+
+\begin{frame}{Axes}
+ \begin{Large}
+  \begin{displaymath}
+   \begin{pmatrix}
+    a_{11} & a_{12} & a_{13} \\
+    a_{21} & a_{22} & a_{23} \\
+    a_{31} & a_{32} & a_{33} \\
+   \end{pmatrix}
+  \end{displaymath}
+ \end{Large}
+
+ \begin{center}
+  \includegraphics[width=0.7\textwidth]{axes}
+ \end{center}
+
+ \begin{columns}
+  \begin{column}{0.4\textwidth}
+   \begin{center}
+    \includegraphics[width=3truecm]{yourturn}
+   \end{center}
+  \end{column}%
+  \begin{column}{0.6\textwidth}
+   np.sum(a)\\
+   np.sum(a, axis=\ldots)
+  \end{column}
+ \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Axes in more than two dimensions}
+ \begin{columns}
+  \begin{column}{0.4\textwidth}
+   \begin{center}
+   \includegraphics[width=0.95\textwidth]{array3d}
+   \end{center}
+  \end{column}%
+  \begin{column}{0.6\textwidth}
+   \begin{lstlisting}
+array(/\textcolor{myred}{[}\textcolor{mygreen}{[}\textcolor{myblue}{[}/ 0,  1,  2,  3/\textcolor{myblue}{]}/,
+        /\textcolor{myblue}{[}/ 4,  5,  6,  7/\textcolor{myblue}{]}/,
+        /\textcolor{myblue}{[}/ 8,  9, 10, 11/\textcolor{myblue}{]}\textcolor{mygreen}{]}/,
+
+       /\textcolor{mygreen}{[}\textcolor{myblue}{[}/12, 13, 14, 15/\textcolor{myblue}{]}/,
+        /\textcolor{myblue}{[}/16, 17, 18, 19/\textcolor{myblue}{]}/,
+        /\textcolor{myblue}{[}/20, 21, 22, 23/\textcolor{myblue}{]}\textcolor{mygreen}{]}\textcolor{myred}{]}/)
+    \end{lstlisting}%
+  \end{column}
+ \end{columns}
+
+ \vspace{0.5truecm}
+ \begin{columns}
+  \begin{column}{0.3\textwidth}
+   \begin{center}
+    \includegraphics[width=3truecm]{yourturn}
+   \end{center}
+  \end{column}%
+  \begin{column}{0.6\textwidth}
+   create this array and produce 2d arrays by cutting perpendicular to the axes 0, 1, and 2
+  \end{column}
+ \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Matrix multiplication}
+ \begin{columns}
+  \begin{column}{0.6\textwidth}
+   \begin{center}
+    \includegraphics[width=0.8\textwidth]{matrixmult}
+   \end{center}
+  \end{column}%
+  \begin{column}{0.4\textwidth}
+   \includegraphics[width=3truecm]{yourturn}
+
+   \vspace{0.4truecm}
+   try \texttt{np.dot$(\bullet, \bullet)$}\\
+   \strut\hphantom{try\ }\texttt{\bullet.dot(\bullet)}\\
+   \strut\hphantom{try\ }\texttt{$\bullet\,@\,\bullet$}\,$^{*)}$
+   
+   \vspace{0.7truecm}
+   \hbox to 1truecm{\hrulefill}
+   \scriptsize{$^{*)}$ Python$\geq$3.5, NumPy$\geq$1.10}
+   \vspace{1truecm}
+  \end{column}
+ \end{columns}
+\end{frame}
+
+\begin{frame}{Mathematical functions in NumPy}
+ \hspace*{-0.45truecm} Universal functions (ufuncs) take ndarrays as argument
+
+ \vspace{0.4truecm}
+ \begin{columns}[t]
+  \begin{column}{0.5\textwidth}
+   \begin{scriptsize}%
+    \structure{Trigonometric functions}\\
+     {\tiny sin, cos, tan, arcsin, arccos, arctan, hypot, arctan2, degrees,
+      radians, unwrap, deg2rad, rad2deg}\\[0.2truecm]
+   \structure{Hyperbolic functions}\\
+     {\tiny sinh, cosh, tanh, arcsinh, arccosh, arctanh}\\[0.2truecm]
+   \structure{Rounding}\\
+     {\tiny around, round\_, rint, fix, floor, ceil, trunc}\\[0.2truecm]
+   \structure{Sums, products, differences}\\
+     {\tiny prod, sum, nansum, cumprod, cumsum, diff, ediff1d,
+      gradient, cross, trapz}\\[0.2truecm]
+   \structure{Exponents and logarithms}\\
+     {\tiny exp, expm1, exp2, log, log10, log2, log1p, logaddexp,
+      logaddexp2}\\[0.2truecm]
+   \end{scriptsize}
+  \end{column}%
+  \begin{column}{0.5\textwidth}
+   \begin{scriptsize}%
+    \structure{Other special functions}\\
+     {\tiny i0, sinc}\\[0.2truecm]
+    \structure{Floating point routines}\\
+     {\tiny signbit, copysign, frexp, ldexp}\\[0.2truecm]
+    \structure{Arithmetic operations}\\
+     {\tiny add, reciprocal, negative, multiply, divide, power, subtract,
+      true\_divide, floor\_divide, fmod, mod, modf, remainder}\\[0.2truecm]
+    \structure{Handling complex numbers}\\
+     {\tiny angle, real, imag, conj}\\[0.2truecm]
+    \structure{Miscellaneous}\\
+     {\tiny convolve, clip, sqrt, square, absolute, fabs, sign, maximum,
+      minimum, fmax, fmin, nan\_to\_num, real\_if\_close, interp}\\
+   \end{scriptsize}
+  \end{column}
+ \end{columns}
+
+ \vspace{0.5truecm}
+ \hspace*{-0.32truecm}{\small Many more special functions are provided as ufuncs by SciPy}
+\end{frame}
+
+\begin{frame}{Rules for broadcasting}
+ Arrays can be broadcast to the same shape if one of the following points is
+ fulfilled:
+ \begin{enumerate}
+  \item The arrays all have exactly the same shape.
+  \item The arrays all have the same number of dimensions and the
+        length of each dimensions is either a common length or 1.
+  \item The arrays that have too few dimensions can have their
+        shapes prepended with a dimension of length 1 to satisfy
+        property 2.
+ \end{enumerate}
+\end{frame}
+
+\begin{frame}{Broadcasting}
+ \includegraphics[width=\textwidth]{broadcast}
+
+ \vspace{-0.3truecm}
+  \includegraphics[width=3truecm]{yourturn}
+\end{frame}
+
+\begin{frame}{Application: Mandelbrot set}
+ \begin{displaymath}
+  z_{n+1} = z_n^2+c,\ \ z_0=0
+ \end{displaymath}
+
+ Mandelbrot set contains the points for which $z$ remains bounded.
+
+ \begin{columns}
+  \begin{column}{0.5\textwidth}
+   \begin{center}
+    \includegraphics[width=0.8\textwidth]{mandelbrot}
+
+    \vspace{0.3truecm}
+    \includegraphics[width=3truecm]{yourturn}
+   \end{center}
+  \end{column}%
+  \begin{column}{0.5\textwidth}
+   \begin{center}
+    \includegraphics[width=0.675\textwidth]{mandelbrot_detail}
+
+    \vspace{2.35truecm}
+   \end{center}
+  \end{column}
+ \end{columns}
+\end{frame}
+
+\begin{frame}{Application: $\pi$ from random numbers}
+ \begin{columns}
+  \begin{column}{0.4\textwidth}
+   \begin{center}
+    \includegraphics[width=0.8\textwidth]{random_pi}
+   \end{center}
+  \end{column}%
+  \begin{column}{0.6\textwidth}
+   \begin{enumerate}
+    \item Create pairs of random numbers and determine the fraction of pairs which
+          has a distance from the origin less than one.
+    \item Multiply the result by four to obtain an approximation of $\pi$.
+   \end{enumerate}
+  \end{column}
+ \end{columns}
+
+ \vspace{0.5truecm}
+ hint: \texttt{count\_nonzero(a)} counts the number of non-zero values in the array \texttt{a} and
+ also works for Boolean arrays. Remember that \texttt{np.info(\dots)} can be helpful.
+
+ \vspace{0.3truecm}
+ \begin{center}
+  \includegraphics[width=3truecm]{yourturn}
+ \end{center}
+\end{frame}
+
+\begin{frame}{Fibonacci series and linear algebra}
+ \begin{center}
+  \includegraphics[width=0.7\textwidth]{fibonacci}
+ \end{center}
+
+ \vspace{-0.3truecm}
+ \begin{columns}[c]
+  \begin{column}{0.5\textwidth}
+   Fibonacci series:\\ 1, 1, 2, 3, 5, 8, 13, 21, \ldots
+  \end{column}%
+  \begin{column}{0.5\textwidth}
+   \begin{displaymath}
+    F_{n+1} = F_n + F_{n-1},\quad F_1 = F_2 = 1
+   \end{displaymath}
+
+   \vspace{-0.8truecm}
+   \begin{displaymath}
+    \strut\quad\mathrm{or:}\quad
+    \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix} 
+    \begin{pmatrix} F_n \\ F_{n-1} \end{pmatrix} =
+    \begin{pmatrix} F_{n+1} \\ F_n \end{pmatrix}
+   \end{displaymath}
+  \end{column}
+ \end{columns}
+
+ \begin{center}
+  What is the limit of $F_{n+1}/F_n$ for large $n$?
+ \end{center}
+\end{frame}
+
+\begin{frame}{Eigenvalue problems}
+ \begin{displaymath}
+  \begin{pmatrix}
+   a_{11} & \cdots & a_{1n} \\
+   \vdots & \ddots & \vdots \\
+   a_{n1} & \cdots & a_{nn}
+  \end{pmatrix}\begin{pmatrix}
+   v_1^{(k)} \\ \vdots \\ v_n^{(k)}
+  \end{pmatrix} = \lambda^{(k)}
+  \begin{pmatrix}
+   v_1^{(k)} \\ \vdots \\ v_n^{(k)}
+  \end{pmatrix}\qquad k=1,\ldots, n
+ \end{displaymath}
+
+ \begin{center}
+  eigenvalue $\lambda^{(k)}$\qquad\qquad
+  eigenvector $\begin{pmatrix}v_1^{(k)}\\\vdots\\v_n^{(k)}\end{pmatrix}$
+ \end{center}
+
+ for our Fibonacci problem:
+   \begin{displaymath}
+    \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix} 
+    \begin{pmatrix} F_n \\ F_{n-1} \end{pmatrix} =
+    \alert{\lambda}\begin{pmatrix} F_{n+1} \\ F_n \end{pmatrix}
+   \end{displaymath}
+
+ We are looking for the eigenvalue larger than one.
+\end{frame}
+
+\begin{frame}{Linear algebra in NumPy}
+ \texttt{import numpy.linalg as LA}
+
+ \vspace{0.3truecm}
+ \structure{Matrix and vector products}\\
+ {\small dot, vdot, inner, outer, matmul, tensordot, einsum, LA.matrix\_power,
+ kron}\\[0.2truecm]
+ \structure{Decompositions}\\
+ {\small LA.cholesky, LA.qr, LA.svd}\\[0.2truecm]
+ \structure{Matrix eigenvalues}\\[-1.32truecm]
+ \alert{\small LA.eig, LA.eigh, LA.eigvals, LA.eigvalsh}\qquad
+ \includegraphics[width=3truecm]{yourturn}\\[0.2truecm]
+ \structure{Norms and other numbers}\\
+ {\small LA.norm, LA.cond, LA.det, LA.matrix\_rank, LA.slogdet,
+ trace}\\[0.2truecm]
+ \structure{Solving equations and inverting matrices}
+ {\small LA.solve, LA.tensorsolve, LA.lstsq, LA.inv, LA.pinv, LA.tensorinv}
+
+ \vspace{0.6truecm}
+ hint: see also the methods for linear algebra in SciPy
+\end{frame}
+
+\begin{frame}{Statistics in NumPy}
+ \structure{Order statistics}\\
+ \small{amin, amax, nanmin, nanmax, ptp, percentile, nanpercentile}\\[0.2truecm]
+ \structure{Averages and variances}\\
+ \small{median, average, mean, std, var, nanmedian, nanmean, nanstd, nanvar}\\[0.2truecm]
+ \structure{Correlating}\\
+ \small{corrcoef, correlate, cov}\\[0.2truecm]
+ \structure{Histograms}\\
+ \small{histogram, histogram2d, histogramdd, bincount, digitize}
+\end{frame}
+
+\begin{frame}{Application: Brownian motion}
+ \begin{center}
+  \includegraphics[width=0.8\textwidth]{diffusion}
+ \end{center}
+
+ \begin{enumerate}
+  \item Simulate several trajectories for a one-dimensional Brownian motion\\
+        hint: \texttt{np.random.choice}
+  \item Plot the mean distance from the origin as a function of time\\
+  \item Plot the variance of the trajectories as a function of time
+ \end{enumerate}
+
+ \vspace{0.3truecm}
+ \begin{center}
+  \includegraphics[width=3truecm]{yourturn}
+ \end{center}
+\end{frame}
+
+\begin{frame}{Sorting, searching, and counting in NumPy}
+ 
+ \structure{Sorting}\\
+ \small{sort, lexsort, argsort, ndarray.sort, msort, sort\_complex, partition,
+        argpartition}\\[0.2truecm]
+ \structure{Searching}\\
+ \small{argmax, nanargmax, argmin, nanargmin, argwhere, nonzero, flatnonzero,
+        where, searchsorted, extract}\\[0.2truecm]
+ \structure{Counting}\\
+ \small{count\_nonzero}
+\end{frame}
+
+\begin{frame}{Application: identify entry closest to $\nicefrac{1}{2}$}
+ \begin{displaymath}
+  \begin{pmatrix}
+   0.05344164 & \alert{0.37648768} & 0.80691163 & 0.71400815\\
+   \alert{0.60825034} & 0.35778938 & 0.37393356 & 0.32615374\\
+   0.83118547 & 0.33178711 & 0.21548027 & \alert{0.42209291}
+  \end{pmatrix}
+ \end{displaymath}
+
+ \begin{displaymath}
+  \Downarrow
+ \end{displaymath}
+
+ \begin{displaymath}
+  \begin{pmatrix}
+   \alert{0.37648768}\\ \alert{0.60825034}\\ \alert{0.42209291}
+  \end{pmatrix}
+ \end{displaymath}
+
+ \vspace{0.3truecm}
+ \includegraphics[width=3truecm]{yourturn}\qquad
+ \raisebox{0.7truecm}{hint: use \texttt{np.argsort}}
+\end{frame}
+
+\begin{frame}{Polynomials in NumPy}
+ Power series: \texttt{numpy.polynomial.polynomial}
+
+ \vspace{0.2truecm}
+ \structure{Polynomial Class}\\
+ \small{Polynomial}\\[0.1truecm]
+ \structure{Basics}\\
+ \small{polyval, polyval2d, polyval3d, polygrid2d, polygrid3d, polyroots,
+        polyfromroots}\\[0.1truecm]
+ \structure{Fitting}\\
+ \small{polyfit, polyvander, polyvander2d, polyvander3d}\\[0.1truecm]
+ \structure{Calculus}\\
+ \small{polyder, polyint}\\[0.1truecm]
+ \structure{Algebra}\\
+ \small{polyadd, polysub, polymul, polymulx, polydiv, polypow}\\[0.1truecm]
+ \structure{Miscellaneous}\\
+ \small{polycompanion, polydomain, polyzero, polyone, polyx, polytrim, polyline}
+
+ \vspace{0.2truecm}
+ \small{also: Chebyshev, Legendre, Laguerre, Hermite polynomials}
+\end{frame}
+
+\begin{frame}{Some examples}
+ \begin{small}
+  \structure{\texttt{P.Polynomial([24, -50, 35, -10, 1])}}
+  \begin{displaymath}
+   p_4(x) = x^4-10x^3+35x^2-50x+24 = (x-1)(x-2)(x-3)(x-4)
+  \end{displaymath}
+
+  \structure{\texttt{p4.deriv()}}
+  \begin{displaymath}
+   \frac{\text{d}p_4(x)}{\text{d}x} = 4x^3-30x^2+70x-50
+  \end{displaymath}
+
+  \structure{\texttt{p4.integ()}}
+  \begin{displaymath}
+   \int p_4(x)\text{d}x = \frac{1}{5}x^5-\frac{5}{2}x^4+\frac{35}{3}x^3
+                          -25x^2+24x+C
+  \end{displaymath}
+
+  \structure{\texttt{p4.polydiv()}}
+  \begin{displaymath}
+   \frac{p_4(x)}{2x+1} = \frac{1}{2}x^3-\frac{21}{4}x^2+\frac{161}{8}x-\frac{561}{16}
+   +\frac{945}{16p_4(x)}
+  \end{displaymath}
+ \end{small}
+\end{frame}
+
+\begin{frame}{Application: polynomial fit}
+ \begin{center}
+  \includegraphics[width=0.7\textwidth]{polyfit}
+ \end{center}
+
+ \vspace{-0.5truecm}
+ \begin{columns}
+  \begin{column}{0.4\textwidth}
+   \begin{center}
+    \includegraphics[width=3truecm]{yourturn}
+   \end{center}
+  \end{column}%
+  \begin{column}{0.6\textwidth}
+   add some noise to a function and fit it to a polynomial
+  \end{column}%
+ \end{columns}
+
+ \vspace{0.3truecm}
+ \small{see \texttt{scipy.optimize.curve\_fit} for general fit functions}
+\end{frame}
+
+\begin{frame}[fragile]{Application: image manipulation}
+
+ \begin{lstlisting}
+from scipy import misc
+face = misc.face(gray=True)
+ \end{lstlisting}
+
+ \vspace{-0.2truecm}
+ \begin{columns}
+  \begin{column}{0.33\textwidth}
+   \begin{center}
+    \includegraphics[width=0.9\textwidth]{face0}
+    
+    \vspace{2.4truecm}
+   \end{center}
+  \end{column}%
+  \begin{column}{0.33\textwidth}
+   \begin{center}
+    \includegraphics[width=0.9\textwidth]{face1}
+
+    \includegraphics[width=0.9\textwidth]{face3}
+   \end{center}
+  \end{column}%
+  \begin{column}{0.33\textwidth}
+   \begin{center}
+    \includegraphics[width=0.9\textwidth]{face2}
+
+    \includegraphics[width=0.9\textwidth]{face4}
+   \end{center}
+  \end{column}%
+ \end{columns}
+
+ \vspace{0.2truecm}
+ \begin{center}
+  \includegraphics[width=3truecm]{yourturn}
+ \end{center}
+\end{frame}
+
+\end{document}
