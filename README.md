@@ -55,7 +55,7 @@ This repo is entirely for my own benefit, and is intended to house the learning 
     
     b. (At top of python file; shebang):
     
-    # !/opt/scitools/environments/default/current/bin/ python
+    '#!/opt/scitools/environments/default/current/bin/ python'
     
     c. (In terminal with module load):
     
