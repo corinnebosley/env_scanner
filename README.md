@@ -55,7 +55,16 @@ This repo is entirely for my own benefit, and is intended to house the learning 
     
     b. (At top of python file; shebang):
     
-    #!/opt/scitools/environments/default/current/bin/ python
+    # !/opt/scitools/environments/default/current/bin/ python
     
+    c. (In terminal with module load):
+    
+    module load scitools
+    
+8. Making a PR against a PR:
+
+    git push origin branch_name
+    
+    Then go to Github, press 'Make PR' button, and select remote and branch name to make the PR against (instead of 'Upstream' and 'Master').
     
     
