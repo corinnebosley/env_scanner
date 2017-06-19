@@ -67,4 +67,10 @@ This repo is entirely for my own benefit, and is intended to house the learning 
     
     Then go to Github, press 'Make PR' button, and select remote and branch name to make the PR against (instead of 'Upstream' and 'Master').
     
+9. Using kapture:
+
+    kapture lives in backpack/kapture, to which there is a link in my pth files (use the alias 'pth' to view these).
     
+    This folder contains several shell scripts to run the kapture module and display the blockview graphic.  Make new run scripts based on these to run kapture with other scripts.
+    
+    Kapture takes samples of processor activity at various stages during the run of the script, so the horizontal stripes in the blockview graphic represent what is being processed at any given sample time.  Processes which take a long time will be represented by long vertical stripes formed by many samples of the same process.
