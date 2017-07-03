@@ -74,3 +74,11 @@ This repo is entirely for my own benefit, and is intended to house the learning 
     This folder contains several shell scripts to run the kapture module and display the blockview graphic.  Make new run scripts based on these to run kapture with other scripts.
     
     Kapture takes samples of processor activity at various stages during the run of the script, so the horizontal stripes in the blockview graphic represent what is being processed at any given sample time.  Processes which take a long time will be represented by long vertical stripes formed by many samples of the same process.
+
+10. Re-running a build for the SSS:
+
+    Any additions that have been made (a new or updated recipe or patch) will prompt a tarball to be built in my local copy of the SSS.
+    
+    If this fails, or I need to make changes and re-run the build, I will need to remove the already-built libraries that I would like to rebuild.  These can be found here:
+    
+    /data/local/cbosley/conda_bld/root/linux-64
