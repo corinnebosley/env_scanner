@@ -82,3 +82,14 @@ This repo is entirely for my own benefit, and is intended to house the learning 
     If this fails, or I need to make changes and re-run the build, I will need to remove the already-built libraries that I would like to rebuild.  These can be found here:
     
     /data/local/cbosley/conda_bld/root/linux-64
+    
+11. Accessing the HPC:
+
+    (In a terminal)
+    ssh -Y xcel00
+        or
+    ssh -Y xcel01
+        or
+    ssh -Y xcfl00
+        or
+    ssh -Y xcfl01
