@@ -86,6 +86,7 @@ This repo is entirely for my own benefit, and is intended to house the learning 
 11. Accessing the HPC:
 
     (In a terminal, type any of these options to connect to the selected node)
+   
     ssh -Y xcel00
         
     ssh -Y xcel01
