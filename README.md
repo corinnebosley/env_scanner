@@ -87,9 +87,15 @@ This repo is entirely for my own benefit, and is intended to house the learning 
 
     (In a terminal)
     ssh -Y xcel00
+    
         or
+        
     ssh -Y xcel01
+    
         or
+        
     ssh -Y xcfl00
+    
         or
+        
     ssh -Y xcfl01
