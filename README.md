@@ -125,6 +125,8 @@ This repo is entirely for my own benefit, and is intended to house the learning 
     
     - back in terminal, tell cronanny to register the changes locally:
     
+      cd ..
+    
       ./cronanny.sh crontabs/
       
     - watch for execution of cron:
