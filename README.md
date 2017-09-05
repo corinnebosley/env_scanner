@@ -94,3 +94,58 @@ This repo is entirely for my own benefit, and is intended to house the learning 
     ssh -Y xcfl00
 
     ssh -Y xcfl01
+    
+12. Kicking a cron to run while I watch it (pervy...)
+
+    For the controlling SSS crontab:
+    
+    - Switch to AVD user:
+    
+      su - avd 
+      
+      [password]
+      
+    - ssh onto cron host machine:
+    
+      ssh -Y els056
+      
+      bash
+      
+    - navigate to crontabs folder and open cron in editor:
+    
+      cd $LOCALTEMP
+      
+      cd avd_crons/
+      
+      cd crontabs/
+      
+      gedit els056.avd.crontab &
+      
+    - edit execution time of section I want to run so that it runs a few minutes after this process
+    
+    - back in terminal, tell cronanny to register the changes locally:
+    
+      ./cronanny.sh crontabs/
+      
+    - watch for execution of cron:
+    
+      top
+      
+      u 
+      
+      avd
+      
+    - in a new terminal, navigate to folder containing updates of cron:
+    
+      cd $SCRATCH
+      
+      cd ../avd
+      
+      cd logs/
+      
+    - when top shows that the cron is running, list the log directory to find the running cron log and tail it:
+    
+      ls -ltr
+      
+      tail -f [logfile]
+      
