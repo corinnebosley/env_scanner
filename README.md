@@ -133,9 +133,7 @@ This repo is entirely for my own benefit, and is intended to house the learning 
     
       top
       
-      u 
-      
-      avd
+      u avd
       
     - in a new terminal, navigate to folder containing updates of cron:
     
