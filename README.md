@@ -9,4 +9,4 @@ You can:
     List environments containing a specific package at a specific version
     List the entire contents of a single specified environment.
 
-I haven't quite got it working yet, so the exact co0mmands are still a bit vague and changeable.
+I haven't quite got it working yet, so the exact commands are still a bit vague and changeable.

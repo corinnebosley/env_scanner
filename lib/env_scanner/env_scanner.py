@@ -68,7 +68,7 @@ def list_envs(immutables=False):
     return available_envs
 
 
-def list_content(environment):
+def list_contents(environment):
     """
     Print names and versions of all packages available in the user-specified
     environment.
@@ -137,25 +137,66 @@ def find_pkg(package=None, version=None, immutables=False):
 
 
 def main():
+    # parser = argparse.ArgumentParser()
+    # list_content = parser.add_argument_group(title="Listing environment "
+    #                                                "contents")
+    # list_content.add_argument("list_content",
+    #                           help="List names and version numbers of all "
+    #                                "packages in specified environment.")
+    # list_content.add_argument("-env", "--environment",
+    #                           help="Name for environment(s) to list contents "
+    #                                "of, i.e. 'default-next', "
+    #                                "'experimental_legacy-current', etc.")
+    #
+    # list_envs = parser.add_argument_group(title="Listing available "
+    #                                             "environment names")
+    # list_envs.add_argument("list_envs",
+    #                        help="List all available Scientific Software Stack "
+    #                             "environments, or use optional arguments to "
+    #                             "list environments containing specific "
+    #                             "packages.")
+    #
+    # list_envs.add_argument("-p", "--package", dest="package",
+    #                        help="Only list environments containing the "
+    #                             "specified package")
+    # list_envs.add_argument("-v", "--version",
+    #                        help="Only list environments containing the "
+    #                             "matching version of specified package (must "
+    #                             "be used in conjunction with '--package'")
+    # list_envs.add_argument("-i", "--immutables", default=False,
+    #                        action="store_true",
+    #                        help="Extend search to include immutable "
+    #                             "environments")
+    #
+    # args = parser.parse_args()
+    # if args.list_envs:
+    #     find_pkg(args.package, args.version, args.immutables)
+    # elif args.list_content:
+    #     list_content(args.environment)
+    # else:
+    #     print("I'm afraid there has been a problem, please "
+    #           "use 'python env_browser.py --help' to check the arguments you "
+    #           "have given me.")
+
     parser = argparse.ArgumentParser()
-    list_content = parser.add_argument_group(title="Listing environment "
-                                                   "contents")
-    list_content.add_argument("list_content",
-                              help="List names and version numbers of all "
-                                   "packages in specified environment.")
+
+    subparsers = parser.add_subparsers(help="options for search type")
+
+    list_content = subparsers.add_parser("list_content",
+                                         help="List names and version numbers "
+                                              "of all packages in specified "
+                                              "environment.")
     list_content.add_argument("-env", "--environment",
                               help="Name for environment(s) to list contents "
                                    "of, i.e. 'default-next', "
                                    "'experimental_legacy-current', etc.")
 
-    list_envs = parser.add_argument_group(title="Listing available "
-                                                "environment names")
-    list_envs.add_argument("list_envs",
-                           help="List all available Scientific Software Stack "
-                                "environments, or use optional arguments to "
-                                "list environments containing specific "
-                                "packages.")
-
+    list_envs = subparsers.add_parser("list_envs",
+                                      help="List all available Scientific "
+                                           "Software Stack environments, or "
+                                           "use optional arguments to list "
+                                           "environments containing specific "
+                                           "packages.")
     list_envs.add_argument("-p", "--package", dest="package",
                            help="Only list environments containing the "
                                 "specified package")
@@ -169,10 +210,11 @@ def main():
                                 "environments")
 
     args = parser.parse_args()
+
     if args.list_envs:
         find_pkg(args.package, args.version, args.immutables)
     elif args.list_content:
-        list_content(args.environment)
+        list_contents(args.environment)
     else:
         print("I'm afraid there has been a problem, please "
               "use 'python env_browser.py --help' to check the arguments you "
