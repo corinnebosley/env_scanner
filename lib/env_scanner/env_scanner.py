@@ -10,8 +10,8 @@ It should also be very easy to do a third thing, which is to search for an
 environment containing a specific version of a package i.e. iris 2.0
 """
 import argparse
-import os
 import glob
+import os
 
 ROOT = '/opt/scitools/environments'
 
@@ -104,12 +104,14 @@ def find_pkg(package=None, version=None, immutables=False):
     pkg_version_match = []
     all_envs = list_envs(immutables)
 
-    # Search each available environment to find any matches with the
-    # specified package
-    # TODO investigate filter function or other matching function
+    # TODO investigate filter function or other function for matching things up
+    # If a package is specified, grab a full list of packages in each available
+    # environment to search through for a match:
     if package:
         for env in all_envs:
             pkg_dict = pkg_list(env)
+            # Search each available environment to find any matches with the
+            # specified package
             if package in pkg_dict:
                 pkg_match.append(env)
                 # Search for matching name AND version, add to separate list.
@@ -118,22 +120,31 @@ def find_pkg(package=None, version=None, immutables=False):
                     pkg_version_match.append(env)
 
     # Print names of all environments, or those containing user's requirement.
+    env_list = []
     if package:
         if version:
             print("Package {} version {} is available in the following "
                   "environment(s): \n".format(package, version))
             for env in pkg_version_match:
-                print(env)
+                env_list.append(env)
         else:
             print("Package {} is available in the following "
                   "environment(s): ".format(package))
             for env in pkg_match:
-                print(env)
+                env_list.append(env)
     else:
         print("The following environments are available for use on this "
               "machine:")
         for env in all_envs:
-            print(env)
+            env_list.append(env)
+
+    # Convert each environment name to a form which can be copied straight to
+    # the command line by the user to load the appropriate module
+    for env in env_list:
+        env = env[27:]  # removes ROOT prefix
+        env = env.replace(r'/', '-')  # replaces forward slash with hyphen
+        env = ('scitools/' + env)  # Adds a scitools prefix
+        print(env)
 
 
 def main():
