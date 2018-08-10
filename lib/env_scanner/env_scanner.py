@@ -105,11 +105,15 @@ def find_pkg(package=None, version=None, immutables=False):
     all_envs = list_envs(immutables)
 
     # TODO investigate filter function or other function for matching things up
-    # Search each available environment to find any matches with the
-    # specified package
+    # If a package is specified, grab a full list of packages in each available
+    # environment to search through for a match:
     if package:
         for env in all_envs:
             pkg_dict = pkg_list(env)
+            # shorten env names for more human-readable form
+            env = env[27:]
+            # Search each available environment to find any matches with the
+            # specified package
             if package in pkg_dict:
                 pkg_match.append(env)
                 # Search for matching name AND version, add to separate list.
@@ -133,7 +137,7 @@ def find_pkg(package=None, version=None, immutables=False):
         print("The following environments are available for use on this "
               "machine:")
         for env in all_envs:
-            print(env)
+            print(env[27:])
 
 
 def main():
