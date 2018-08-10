@@ -10,8 +10,9 @@ It should also be very easy to do a third thing, which is to search for an
 environment containing a specific version of a package i.e. iris 2.0
 """
 import argparse
-import os
 import glob
+import os
+import subprocess
 
 ROOT = '/opt/scitools/environments'
 
@@ -44,7 +45,12 @@ def list_envs(immutables=False):
     :return: list of environment names
     """
     all_the_envs = []
-    descriptors = glob.glob(ROOT + '/*')
+    # descriptors = glob.glob(ROOT + '/*')
+
+    subprocess.check_output("module avail")
+
+    print modules
+    descriptors = [item for item in modules if item.startswith('scitools')]
 
     # Compile list of all environments currently available:
     for desc in descriptors:
