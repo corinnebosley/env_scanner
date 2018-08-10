@@ -45,10 +45,9 @@ def list_envs(immutables=False):
     :return: list of environment names
     """
     all_the_envs = []
+    # TODO replace 'descriptors' glob.glob with a list passed in from bash?
     descriptors = glob.glob(ROOT + '/*')
 
-    # subprocess.check_output("module avail")
-    #
     # print modules
     # descriptors = [item for item in modules if item.startswith('scitools')]
 
