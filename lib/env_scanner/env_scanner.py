@@ -45,12 +45,12 @@ def list_envs(immutables=False):
     :return: list of environment names
     """
     all_the_envs = []
-    # descriptors = glob.glob(ROOT + '/*')
+    descriptors = glob.glob(ROOT + '/*')
 
-    subprocess.check_output("module avail")
-
-    print modules
-    descriptors = [item for item in modules if item.startswith('scitools')]
+    # subprocess.check_output("module avail")
+    #
+    # print modules
+    # descriptors = [item for item in modules if item.startswith('scitools')]
 
     # Compile list of all environments currently available:
     for desc in descriptors:
