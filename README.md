@@ -20,4 +20,8 @@ You can:
     List the entire contents of a single specified environment.
     `$ python env_scanner.py --list_content -env default-next`
 
+You can also add the flag `-i` to include immutable environments in your search.
 
+This is also runnable as a shell script, using `env_browser.sh` instead of `python env_scanner.py`; for example:
+
+    `$ env_browser.sh --list_envs`
