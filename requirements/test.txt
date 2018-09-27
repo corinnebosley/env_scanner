@@ -1,0 +1,6 @@
+# Dependencies needed to run the env_scanner tests
+#------------------------------------------
+
+pep8
+subprocess
+pytest

@@ -1,14 +1,16 @@
 from setuptools import setup, find_packages
 import os
+from distutils.util import convert_path
 
 here = os.path.abspath(os.path.dirname(__file__))
 
 # Get the long description from the README file
-with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+with open(os.path.join(here, 'README.md')) as f:
     long_description = f.read()
 
 # Arguments marked as "Required" below must be included for upload to PyPI.
 # Fields marked as "Optional" may be commented out.
+
 
 def extract_version():
     version = None
@@ -21,59 +23,74 @@ def extract_version():
                 break
     return version
 
-pypi_name = 'scitools-iris'
+
+def pip_requirements(name):
+    fname = os.path.join(here, 'requirements', '{}.txt'.format(name))
+    if not os.path.exists(fname):
+        raise RuntimeError('Unable to find the {} requirements file at {}'
+                           ''.format(name, fname))
+    reqs = []
+    with open(fname, 'r') as fh:
+        for line in fh:
+            line = line.strip()
+            if not line or line.startswith('#'):
+                continue
+            reqs.append(line)
+    return reqs
+
+
+# Returns the package and all its sub-packages
+def find_package_tree(root_path, root_package):
+    root_path = root_path.replace('/', os.path.sep)
+    packages = [root_package]
+    root_count = len(root_path.split(os.path.sep))
+    for (dir_path, dir_names, file_names) in os.walk(convert_path(root_path)):
+        # Prune dir_names *in-place* to prevent unwanted directory recursion
+        for dir_name in list(dir_names):
+            contains_init_file = os.path.isfile(os.path.join(dir_path,
+                                                             dir_name,
+                                                             '__init__.py'))
+            if not contains_init_file:
+                dir_names.remove(dir_name)
+            # Exclude compiled PyKE rules, but keep associated unit tests.
+            if dir_name == 'compiled_krb' and 'tests' not in dir_path:
+                dir_names.remove(dir_name)
+        if dir_names:
+            prefix = dir_path.split(os.path.sep)[root_count:]
+            packages.extend(['.'.join([root_package] + prefix + [dir_name])
+                             for dir_name in dir_names])
+    return packages
+
+
+# TODO Set up pytest test runner
+# class SetupTestRunner(TestRunner, Command):
+#     pass
+
+
+pypi_name = 'env_scanner'
 
 with open(os.path.join(here, 'README.md'), 'r') as fh:
-    long_description = ''.join(fh.readlines())
+    description = ''.join(fh.readlines())
 
 setup(
-    name='env_scanner',  # Required
+    name=pypi_name,  # Required
     version=extract_version(),  # Required
     description='A command-line tool for searching through local Scientific '
                 'Software Stack installations',  # Optional
-    long_description=long_description,  # Optional
+    long_description=description,  # Optional
     long_description_content_type='text/markdown',  # Optional (see note above)
     url='https://github.com/boss-corinne/env_scanner',  # Optional
     author='UK Met Office',  # Optional
     author_email='corinne.bosley@metoffice.gov.uk',  # Optional
-    packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
-
-    # This field lists other packages that your project depends on to run.
-    # Any package you put here will be installed by pip when your project is
-    # installed, so they must be valid existing projects.
-    #
-    # For an analysis of "install_requires" vs pip's requirements files see:
-    # https://packaging.python.org/en/latest/requirements.html
-    # # install_requires=['argparse'],  # Optional
-
-    # List additional groups of dependencies here (e.g. development
-    # dependencies). Users will be able to install these using the "extras"
-    # syntax, for example:
-    #
-    #   $ pip install sampleproject[dev]
-    #
-    # Similar to `install_requires` above, these must be valid existing
-    # projects.
-    extras_require={
-        'test': ['pytest', 'subprocess'],
-    },
-
-    # To provide executable scripts, use entry points in preference to the
-    # "scripts" keyword. Entry points provide cross-platform support and allow
-    # `pip` to create the appropriate form of executable for the target
-    # platform.
-    #
-    # For example, the following would provide a command called `sample` which
-    # executes the function `main` from this package when invoked:
-    entry_points={  # Optional
-        'console_scripts': [
-            'sample=sample:main',
-        ],
-    },
-
-    project_urls={  # Optional
-        'Bug Reports and Issues':
-            'https://github.com/boss-corinne/env_scanner/issues',
-        'Source': 'https://github.com/boss-corinne/env_scanner',
-    },
+    packages=find_package_tree('lib/env_scanner', 'env_scanner'),
+    package_dir={'': 'lib'},
+    include_package_data=True,
+    # setup_requires=pip_requirements('setup'),
+    install_requires=pip_requirements('setup'),
+    tests_require=['{}[test]'.format(pypi_name)],
+    extras_require={'test': pip_requirements('test'),
+                    'all': pip_requirements('all'),
+                    },
 )
+
+# TODO Remove easy-install

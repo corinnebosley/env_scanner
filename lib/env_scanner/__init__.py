@@ -28,6 +28,7 @@ This is also runnable as a shell script, using `env_browser.sh` instead of `pyth
     `$ env_browser.sh --list_envs`
 
 """
-
+from six.moves import (filter, input, map, range, zip)  # noqa
+import six
 
 __version__ = '0.0.1dev0'
