@@ -1,11 +1,15 @@
+import os
 import subprocess
 import pytest
 
 
+HERE = os.path.abspath(os.path.dirname(__file__))
+ENV_SC = os.path.abspath(os.path.dirname(os.path.join(HERE, '../..')))
+
 class TestListContent():
     def setup_class(self):
-        # List available environments to test functionality with
-        get_envs = 'python env_scanner.py --list_envs'
+        # Command to list available environments
+        get_envs = 'python {}/env_scanner.py --list_envs'.format(ENV_SC)
         self.env_list = subprocess.run([get_envs])
         assert subprocess.CompletedProcess.returncode == 0
 
@@ -17,7 +21,7 @@ class TestListContent():
 
 
     def test_list_content_all_envs(self):
-        command_list = ['python env_scanner.py --list_content -env '
+        command_list = ['python {}env_scanner.py --list_content -env '
                         '{}'.format(env) for env in self.output]
         subprocess.run([command for command in command_list],
                        capture_output=True)
