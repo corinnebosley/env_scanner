@@ -78,13 +78,16 @@ def list_contents(environment):
     :param immutables: boolean representing whether to include immutable
     environments in the list of those available.
     """
+    # Remove 'scitools' from start of environment descriptor:
+    environment = environment[9:]
     desc = environment.split('-')[0]
     label = environment.split('-')[1]
     env = os.path.join(ROOT, desc, label)
 
     # Gather and print out list of packages in specified environment:
     packages = pkg_list(env)
-    print('Contents of {} environment:\n'.format(env))
+    print('Now listing contents of the following environment:')
+    print(env)
     for key in packages.keys():
         pkg = key
         vsn = packages[key][0]
@@ -122,14 +125,20 @@ def find_pkg(package=None, version=None, immutables=False):
     # Print names of all environments, or those containing user's requirement.
     env_list = []
     if package:
+        print("Searching for the following package: ")
+        print(package)
         if version:
-            print("Package {} version {} is available in the following "
-                  "environment(s): \n".format(package, version))
+            print("Searching for specified package at the following "
+                  "version: ")
+            print(version)
+            print("The package and version specified above is available in "
+                  "the following environments: ")
+
             for env in pkg_version_match:
                 env_list.append(env)
         else:
-            print("Package {} is available in the following "
-                  "environment(s): ".format(package))
+            print("The package specified above is available in the "
+                  "following environments: ")
             for env in pkg_match:
                 env_list.append(env)
     else:
