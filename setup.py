@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 import os
 from distutils.util import convert_path
 
@@ -62,7 +62,7 @@ def find_package_tree(root_path, root_package):
     return packages
 
 
-# TODO Set up pytest test runner
+# TODO Set up unittest test runner
 # class SetupTestRunner(TestRunner, Command):
 #     pass
 
@@ -91,6 +91,7 @@ setup(
     extras_require={'test': pip_requirements('test'),
                     'all': pip_requirements('all'),
                     },
+    entry_points={'console_scripts': ['env_scanner=env_scanner.scan:main']},
 )
 
-# TODO Remove easy-install
+# TODO Remove easy-install (check setuptools options)

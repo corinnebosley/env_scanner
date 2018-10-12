@@ -31,4 +31,4 @@ This is also runnable as a shell script, using `env_browser.sh` instead of `pyth
 from six.moves import (filter, input, map, range, zip)  # noqa
 import six
 
-__version__ = '0.0.1dev0'
+__version__ = "0.1.0dev0"
