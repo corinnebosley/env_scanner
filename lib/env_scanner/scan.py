@@ -54,6 +54,7 @@ def list_envs(immutables=False):
             all_the_envs.append(os.path.join(desc, label))
 
             # Use full list if immutables are included
+            # TODO Remove all inclusion of immutables
             if immutables:
                 available_envs = all_the_envs
             else:
