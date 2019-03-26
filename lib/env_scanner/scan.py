@@ -41,7 +41,7 @@ def list_envs(immutables=False):
     Compile list of environments available at runtime
     from /opt/scitools/environments
 
-    :return: list of environment names
+    :returns: list of environment names
     """
     all_the_envs = []
     descriptors = glob.glob(ROOT + '/*')
@@ -54,7 +54,6 @@ def list_envs(immutables=False):
             all_the_envs.append(os.path.join(desc, label))
 
             # Use full list if immutables are included
-            # TODO Remove all inclusion of immutables
             if immutables:
                 available_envs = all_the_envs
             else:
