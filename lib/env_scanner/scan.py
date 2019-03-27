@@ -86,12 +86,16 @@ def list_contents(environment):
 
     # Gather and print out list of packages in specified environment:
     packages = pkg_list(env)
-    print('Now listing contents of the following environment:')
-    print(env)
+    # print('Now listing contents of the following environment:')
+    # print(env)
+    contents = []
     for key in packages.keys():
         pkg = key
         vsn = packages[key][0]
-        print(pkg + '   ' + vsn)
+        # TODO: (09:55 Wednesday 27th March 2019) find way to return result and print in main() so that tests work.
+        contents.append(pkg + '              ' + vsn)
+
+    return contents
 
 
 def find_pkg(package=None, version=None, immutables=False):
@@ -153,7 +157,7 @@ def find_pkg(package=None, version=None, immutables=False):
         env = env[27:]  # removes ROOT prefix
         env = env.replace(r'/', '-')  # replaces forward slash with hyphen
         env = ('scitools/' + env)  # Adds a scitools prefix
-        print(env)
+        return env
 
 
 def main():
@@ -185,9 +189,13 @@ def main():
     args = parser.parse_args()
 
     if args.list_envs:
-        find_pkg(args.package, args.version, args.immutables)
+        print(find_pkg(args.package, args.version, args.immutables))
     elif args.list_content:
-        list_contents(args.environment)
+        # print(list_contents(args.environment))
+        print('Now listing contents of the following environment:')
+        print(args.environment)
+        contents = list_contents(args.environment)
+        print(contents)
     else:
         print("I'm afraid there has been a problem, please "
               "use 'python env_browser.py --help' to check the arguments you "
